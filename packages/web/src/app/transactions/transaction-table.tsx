@@ -6,7 +6,12 @@ import { unauthorized } from 'next/navigation';
 import { PaginationControls } from './pagination-controls';
 import { TransactionFilters } from './transaction-filters';
 
-export async function TransactionTable({ page, hash }: { page: number; hash?: string }) {
+export async function TransactionTable({
+  page,
+  startDate,
+  endDate,
+  ...filters
+}: TransactionFilters & { page: number }) {
   const session = await auth();
   if (!session?.user?.id) {
     return unauthorized();
@@ -20,7 +25,8 @@ export async function TransactionTable({ page, hash }: { page: number; hash?: st
       pageSize: 20,
       sortDirection: 'desc',
     },
-    { hash },
+    filters,
+    { startDate: startDate ? new Date(startDate) : undefined, endDate: endDate ? new Date(endDate) : undefined },
   );
 
   return (

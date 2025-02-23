@@ -8,8 +8,13 @@ import {
   PaginationMetadataResponse,
   PaginationParameters,
 } from './utils/pagination';
+import { postgresTsRange } from './utils/postgres-range-functions';
 
 export type TransactionDTO = Selectable<Database['transaction']>;
+export interface TransactionRangeFilters {
+  startDate?: Date;
+  endDate?: Date;
+}
 
 export class TransactionRepository {
   constructor(private readonly db: Kysely<Database>) {}
@@ -25,16 +30,21 @@ export class TransactionRepository {
     userId: string,
     pagination: PaginationParameters,
     filters: Partial<TransactionDTO>,
+    rangeFilters?: TransactionRangeFilters,
   ): Promise<PaginationMetadataResponse<TransactionDTO[]>> {
-    console.log('filters', filters);
     const query = getRows(this.db, 'transaction', { userId })
       .selectAll('t')
       .where(eb => eb.and(filters))
+      .$if(!!rangeFilters?.startDate || !!rangeFilters?.endDate, qb =>
+        qb.where('t.timestamp', '<@', eb =>
+          postgresTsRange(eb.val(rangeFilters?.startDate ?? null), eb.val(rangeFilters?.endDate ?? null)),
+        ),
+      )
       .$call(qb => addPaginationFilter(qb, pagination, 't.timestamp'));
+    console.log(query.compile());
     const metadata = await getPaginationMetadata(query, pagination);
 
     const data = await query.execute();
-    console.log(data, metadata);
 
     return { data, pagination: metadata };
   }
