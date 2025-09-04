@@ -1,4 +1,4 @@
-import type { Generated, ColumnType } from "kysely";
+import type { Generated, ColumnType } from 'kysely';
 
 export interface BaseTable {
   id: Generated<string>;
