@@ -6,7 +6,11 @@
   "private": true,
   "scripts": {
     "lint": "eslint",
-    "lint:fix": "eslint --fix"
+    "lint:fix": "eslint --fix",
+    "db:init": "bun scripts/init-database.ts",
+    "db:migrate": "bun kysely migrate up -e development",
+    "db:migrate:production": "bun kysely migrate up -e production",
+    "db:migrate:new": "bun kysely migrate:make"
   },
   "workspaces": {
     "packages": [
@@ -17,8 +21,12 @@
     "@eslint/js": "^9.34.0",
     "@stylistic/eslint-plugin": "^5.3.1",
     "@types/bun": "latest",
+    "@types/pg": "^8.15.5",
     "eslint": "^9.34.0",
-    "typescript-eslint": "^8.42.0"
+    "kysely": "^0.28.5",
+    "pg": "^8.16.3",
+    "typescript-eslint": "^8.42.0",
+    "zod": "^4.1.5"
   },
   "peerDependencies": {
     "typescript": "^5"
