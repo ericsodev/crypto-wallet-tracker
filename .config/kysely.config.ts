@@ -1,5 +1,5 @@
 import { CamelCasePlugin } from 'kysely';
-import { defineConfig, DUMMY_DIALECT_CONFIG, KyselyCTLConfig } from 'kysely-ctl';
+import { defineConfig } from 'kysely-ctl';
 import { databaseConnectionFromEnv } from '../packages/common/src/database/database-connection';
 import z from 'zod';
 
