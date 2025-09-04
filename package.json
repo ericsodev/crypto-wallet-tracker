@@ -8,8 +8,8 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "db:init": "bun scripts/init-database.ts",
-    "db:migrate": "bun kysely migrate up -e development",
-    "db:migrate:production": "bun kysely migrate up -e production",
+    "db:migrate": "NODE_ENV=development bun kysely migrate up -e development",
+    "db:migrate:production": "bun kysely migrate up",
     "db:migrate:new": "bun kysely migrate:make"
   },
   "workspaces": {
