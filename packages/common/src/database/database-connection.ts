@@ -51,3 +51,5 @@ export const databaseConnectionFromEnv = (environment: 'development' | 'producti
     maxConnections: 50,
   });
 };
+
+export const db = databaseConnectionFromEnv(z.enum(['development', 'production']).parse(process.env['NODE_ENV']));

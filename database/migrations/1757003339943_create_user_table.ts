@@ -8,6 +8,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn('updatedAt', 'timestamptz', col => col.notNull().defaultTo(sql`current_timestamp`))
     .addColumn('deletedAt', 'timestamptz')
     .addColumn('name', 'varchar(63)', col => col.notNull().check(sql`LENGTH(name) > 0`))
+    .addColumn('email', 'varchar(255)', col => col.notNull().check(sql`LENGTH(email) > 0`))
     .execute();
 
   await db.schema

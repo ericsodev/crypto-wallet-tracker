@@ -1,4 +1,6 @@
-import Image from 'next/image'
+'use client';
+import { signIn } from 'next-auth/react';
+import Image from 'next/image';
 
 export default function Home() {
   return (
@@ -15,15 +17,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
+            By <Image src="/vercel.svg" alt="Vercel Logo" className="dark:invert" width={100} height={24} priority />
           </a>
         </div>
       </div>
@@ -86,9 +80,7 @@ export default function Home() {
               -&gt;
             </span>
           </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
+          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>Explore the Next.js 13 playground.</p>
         </a>
 
         <a
@@ -107,7 +99,14 @@ export default function Home() {
             Instantly deploy your Next.js site to a shareable URL with Vercel.
           </p>
         </a>
+        <button
+          onClick={() => {
+            signIn('google');
+          }}
+        >
+          login
+        </button>
       </div>
     </main>
-  )
+  );
 }
