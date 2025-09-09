@@ -22,12 +22,31 @@ export async function seed(db: Kysely<Database>): Promise<void> {
     })
     .execute();
 
-  await db
+  const [krakenWallet, nanoWallet] = await db
     .insertInto('wallet')
     .values([
       { address: '0x123456', name: 'ETH Kraken Wallet', userId: user.id },
 
       { address: '0xdeadbeef', name: 'ETH Nano Wallet', userId: user.id },
+    ])
+    .returningAll()
+    .execute();
+  if (!krakenWallet) throw new Error('Missing kraken wallet');
+  if (!nanoWallet) throw new Error('Missing nano wallet');
+
+  await db
+    .insertInto('walletBalance')
+    .values([
+      {
+        timestamp: new Date(),
+        balance: '4.832',
+        walletId: krakenWallet.id,
+      },
+      {
+        timestamp: new Date(),
+        balance: '0.23088',
+        walletId: nanoWallet.id,
+      },
     ])
     .execute();
 }
