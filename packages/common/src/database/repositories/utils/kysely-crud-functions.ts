@@ -43,7 +43,7 @@ export const getRows = async <T extends keyof Database>(
     .selectAll()
     .where(eb => eb.and(filters as any))
     .$if(!!includeDeleted, qb => qb.where('deletedAt', 'is', null))
-    .executeTakeFirst();
+    .execute();
 };
 
 export const updateRow = async <T extends keyof Database>(
