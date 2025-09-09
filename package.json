@@ -10,7 +10,9 @@
     "db:init": "bun scripts/init-database.ts",
     "db:migrate": "NODE_ENV=development bun kysely migrate up -e development",
     "db:migrate:production": "bun kysely migrate up",
-    "db:migrate:new": "NODE_ENV=development bun kysely migrate:make"
+    "db:migrate:new": "NODE_ENV=development bun kysely migrate:make",
+    "db:seed:new": "NODE_ENV=development bun kysely seed:make",
+    "db:seed": "NODE_ENV=development bun kysely seed:run"
   },
   "workspaces": {
     "packages": [
