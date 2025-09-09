@@ -44,7 +44,7 @@ const items = [
 export function AppSidebar() {
   const { data } = useSession();
   return (
-    <Sidebar side="left" collapsible="icon" className="min-w-[200px]">
+    <Sidebar side="left" collapsible="icon">
       <SidebarHeader>
         <SidebarGroupLabel>Crypto Tracker</SidebarGroupLabel>
       </SidebarHeader>
@@ -69,14 +69,14 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <a href={'/settings'}>
-                  <Settings />
-                  <span>Settings</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <a href={'/settings'}>
+                <Settings />
+                <span>Settings</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
