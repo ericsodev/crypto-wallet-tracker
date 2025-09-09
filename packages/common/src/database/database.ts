@@ -1,7 +1,9 @@
 import type { AuthProviderTable } from './tables/auth-provider-table';
 import type { UserTable } from './tables/user-table';
+import type { WalletTable } from './tables/wallet-table';
 
 export interface Database {
-  user: UserTable;
   authProvider: AuthProviderTable;
+  user: UserTable;
+  wallet: WalletTable;
 }
