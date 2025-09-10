@@ -6,6 +6,7 @@ import { WalletDTO, WalletRepository } from '@common/database/repositories/walle
 import { Plus } from 'lucide-react';
 import { unauthorized } from 'next/navigation';
 import WalletCard from './wallet-card';
+import { ConnectWallet } from './connect-wallet';
 
 export interface WalletDetail extends WalletDTO {
   balance: string;
@@ -39,16 +40,13 @@ export default async function Wallets() {
           <h1 className="text-3xl font-bold text-foreground">Wallets</h1>
           <p className="text-muted-foreground">Manage your connected wallets</p>
         </div>
-        <Button className="gradient-primary shadow-primary">
-          <Plus className="mr-2 h-4 w-4" />
-          Connect Wallet
-        </Button>
+        <ConnectWallet />
       </div>
 
       {/* Wallets Grid */}
       <div className="grid gap-6">
         {wallets.map(wallet => (
-          <WalletCard wallet={wallet} />
+          <WalletCard key={wallet.id} wallet={wallet} />
         ))}
       </div>
 

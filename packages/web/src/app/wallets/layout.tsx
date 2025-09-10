@@ -1,3 +1,11 @@
 import SidebarLayout from '@/components/app-sidebar/sidebar-layout';
+import { PropsWithChildren } from 'react';
+import WagmiContextProvider from '../context/wagmi';
 
-export default SidebarLayout;
+export default function Layout({ children }: PropsWithChildren) {
+  return (
+    <SidebarLayout>
+      <WagmiContextProvider cookies={null}>{children}</WagmiContextProvider>;
+    </SidebarLayout>
+  );
+}
