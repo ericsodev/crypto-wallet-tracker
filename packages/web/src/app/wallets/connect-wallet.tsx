@@ -13,11 +13,16 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { useAppKit } from '@reown/appkit/react';
 import { Plus } from 'lucide-react';
+import { useAppKitWallet } from '@reown/appkit-wallet-button/react';
 
 export function ConnectWallet() {
-  const { open } = useAppKit();
+  const { connect } = useAppKitWallet({
+    namespace: 'eip155',
+    onSuccess: foo => {
+      console.log(foo);
+    },
+  });
   return (
     <Dialog>
       <form>
@@ -34,14 +39,33 @@ export function ConnectWallet() {
               Choose a wallet to connect to your account or manually input an Ethereum address.
             </DialogDescription>
           </DialogHeader>
-          <Button
-            onClick={() => {
-              open({ view: 'Connect' });
-            }}
-          >
-            Connect with OpenWallet
-          </Button>
-          <Separator />
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                connect('metamask');
+              }}
+            >
+              MetaMask
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                connect('coinbase');
+              }}
+            >
+              Coinbase
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                connect('kraken');
+              }}
+            >
+              Kraken
+            </Button>
+          </div>
+          <Separator className="mt-4 mb-4" />
           <div className="grid gap-4">
             <div className="grid gap-3">
               <Label htmlFor="name-1">Wallet Name</Label>

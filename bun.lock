@@ -46,6 +46,7 @@
         "@radix-ui/react-tooltip": "^1.2.8",
         "@reown/appkit": "^1.8.4",
         "@reown/appkit-adapter-wagmi": "^1.8.4",
+        "@reown/appkit-wallet-button": "^1.8.4",
         "@tailwindcss/postcss": "^4.1.13",
         "@tanstack/react-query": "^5.87.1",
         "@types/node": "24.3.1",
@@ -339,6 +340,8 @@
     "@reown/appkit-utils": ["@reown/appkit-utils@1.8.4", "", { "dependencies": { "@reown/appkit-common": "1.8.4", "@reown/appkit-controllers": "1.8.4", "@reown/appkit-polyfills": "1.8.4", "@reown/appkit-wallet": "1.8.4", "@wallet-standard/wallet": "1.1.0", "@walletconnect/logger": "2.1.2", "@walletconnect/universal-provider": "2.21.7", "valtio": "2.1.7", "viem": ">=2.37.2" } }, "sha512-8xV2256s0fs1hWpYiPl+PpMo59gX/+zjOtefMK2hqsJjPz31uWBCkJ/caGE005eY06sLzQbkl2ruwtAzouaILg=="],
 
     "@reown/appkit-wallet": ["@reown/appkit-wallet@1.8.4", "", { "dependencies": { "@reown/appkit-common": "1.8.4", "@reown/appkit-polyfills": "1.8.4", "@walletconnect/logger": "2.1.2", "zod": "3.22.4" } }, "sha512-VBHi0bSz61JxDS/FD+C+8b0duYUv+/Q4ADGQXvHahjLwI5Bq2rWyjquCUdFhpsGvenRG0KyrILhnMyWFgJH9Kg=="],
+
+    "@reown/appkit-wallet-button": ["@reown/appkit-wallet-button@1.8.4", "", { "dependencies": { "@reown/appkit-common": "1.8.4", "@reown/appkit-controllers": "1.8.4", "@reown/appkit-ui": "1.8.4", "@reown/appkit-utils": "1.8.4", "lit": "3.3.0", "valtio": "2.1.7" }, "optionalDependencies": { "@lit/react": "1.0.8" } }, "sha512-vEYBmR6yJQbLGyOCKt9Crs471VFnwTNdad0M87Q5TzFj6ZXxmuSS6y/ZhITeuxLv7xy2rjnu3Tjto8IeS8keWw=="],
 
     "@safe-global/safe-apps-provider": ["@safe-global/safe-apps-provider@0.18.6", "", { "dependencies": { "@safe-global/safe-apps-sdk": "^9.1.0", "events": "^3.3.0" } }, "sha512-4LhMmjPWlIO8TTDC2AwLk44XKXaK6hfBTWyljDm0HQ6TWlOEijVWNrt2s3OCVMSxlXAcEzYfqyu1daHZooTC2Q=="],
 

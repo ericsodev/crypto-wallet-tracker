@@ -26,9 +26,12 @@ const metadata = {
 createAppKit({
   adapters: [wagmiAdapter],
   projectId,
-  networks: [mainnet, arbitrum],
+  networks: [mainnet],
   defaultNetwork: mainnet,
   metadata: metadata,
+  themeVariables: {
+    '--w3m-font-family': 'Inter',
+  },
   features: {
     analytics: true, // Optional - defaults to your Cloud configuration
   },
