@@ -42,7 +42,7 @@ export class UserRepository {
           providerId,
         }),
       )
-      .selectAll()
+      .selectAll('user')
       .executeTakeFirst();
   }
 }
