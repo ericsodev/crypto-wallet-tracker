@@ -28,7 +28,7 @@ export const getRow = async <T extends keyof Database>(
     .selectFrom(db.dynamic.table(tableName).as('t'))
     .selectAll()
     .where(eb => eb.and(filters as any))
-    .$if(!!includeDeleted, qb => qb.where('deletedAt', 'is', null))
+    .$if(!includeDeleted, qb => qb.where('deletedAt', 'is', null))
     .executeTakeFirst();
 };
 
@@ -42,7 +42,7 @@ export const getRows = async <T extends keyof Database>(
     .selectFrom(db.dynamic.table(tableName).as('t'))
     .selectAll()
     .where(eb => eb.and(filters as any))
-    .$if(!!includeDeleted, qb => qb.where('deletedAt', 'is', null))
+    .$if(!includeDeleted, qb => qb.where('deletedAt', 'is', null))
     .execute();
 };
 
@@ -57,7 +57,7 @@ export const updateRow = async <T extends keyof Database>(
     .updateTable(db.dynamic.table(tableName).as('t'))
     .set(data as any)
     .where(eb => eb.and(filters as any))
-    .$if(!!includeDeleted, qb => qb.where('deletedAt', 'is', null))
+    .$if(!includeDeleted, qb => qb.where('deletedAt', 'is', null))
     .returningAll()
     .executeTakeFirst();
 };
@@ -73,6 +73,6 @@ export const deleteRow = async <T extends keyof Database>(
     .returningAll()
     .set({ deletedAt: new Date() } as any)
     .where(eb => eb.and(filters as any))
-    .$if(!!includeDeleted, qb => qb.where('deletedAt', 'is', null))
+    .$if(!includeDeleted, qb => qb.where('deletedAt', 'is', null))
     .executeTakeFirst();
 };
