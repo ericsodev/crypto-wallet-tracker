@@ -1,0 +1,16 @@
+{
+  "name": "workers",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "bullmq": "^5.58.5",
+    "common": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
