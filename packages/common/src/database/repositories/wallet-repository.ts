@@ -2,8 +2,10 @@ import type { Kysely } from 'kysely';
 import { createRow, deleteRow, getRow, getRows } from './utils/kysely-crud-functions';
 import type { Database } from '../database';
 import type { Selectable } from 'kysely';
+import type { Merge } from 'type-fest';
 
 export type WalletDTO = Selectable<Database['wallet']>;
+export type WalletWithRecentBalanceDTO = Merge<Selectable<Database['wallet']>, { balance?: string | null }>;
 
 export class WalletRepository {
   constructor(private readonly db: Kysely<Database>) {}
@@ -19,8 +21,19 @@ export class WalletRepository {
     userId: string,
     orderBy: 'name' | 'createdAt' = 'name',
     orderDirection: 'asc' | 'desc' = 'asc',
-  ): Promise<WalletDTO[]> {
-    return getRows(this.db, 'wallet', { userId }).orderBy(orderBy, orderDirection).execute();
+  ): Promise<WalletWithRecentBalanceDTO[]> {
+    return getRows(this.db, 'wallet', { userId })
+      .orderBy(orderBy, orderDirection)
+      .select(qb =>
+        qb
+          .selectFrom('walletBalance')
+          .whereRef('walletBalance.walletId', '=', 't.id')
+          .select('walletBalance.balance')
+          .orderBy('timestamp', 'desc')
+          .limit(1)
+          .as('balance'),
+      )
+      .execute();
   }
 
   async createWallet(userId: string, name: string, address: string): Promise<WalletDTO> {
