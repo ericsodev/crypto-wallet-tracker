@@ -1,8 +1,12 @@
+'use client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { WalletDetail } from './page';
 import CopyButton from '@/components/copy-button/copy-button';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, Trash2 } from 'lucide-react';
+import { deleteWallet } from '../actions/delete-wallet';
+import { toast } from 'sonner';
+import { ConfirmDeleteWallet } from './confirm-delete-dialog';
 
 export default function WalletCard({ wallet }: { wallet: WalletDetail }) {
   return (
@@ -17,9 +21,14 @@ export default function WalletCard({ wallet }: { wallet: WalletDetail }) {
                 <ExternalLink className="h-4 w-4" />
               </Button>
             </a>
-            <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10">
-              <Trash2 className="h-4 w-4" />
-            </Button>
+            <ConfirmDeleteWallet
+              wallet={wallet}
+              trigger={
+                <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10">
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              }
+            />
           </div>
         </div>
       </CardHeader>

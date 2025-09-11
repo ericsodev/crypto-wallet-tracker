@@ -1,5 +1,5 @@
 import type { Kysely } from 'kysely';
-import { createRow, getRow, getRows } from './utils/kysely-crud-functions';
+import { createRow, deleteRow, getRow, getRows } from './utils/kysely-crud-functions';
 import type { Database } from '../database';
 import type { Selectable } from 'kysely';
 
@@ -9,6 +9,10 @@ export class WalletRepository {
   constructor(private readonly db: Kysely<Database>) {}
   async get(id: string): Promise<WalletDTO | undefined> {
     return getRow(this.db, 'wallet', { id });
+  }
+
+  async delete(id: string): Promise<void> {
+    await deleteRow(this.db, 'wallet', { id });
   }
 
   async getByUserId(userId: string): Promise<WalletDTO[]> {
