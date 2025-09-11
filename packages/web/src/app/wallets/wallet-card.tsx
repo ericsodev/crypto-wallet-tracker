@@ -4,8 +4,6 @@ import { WalletDetail } from './page';
 import CopyButton from '@/components/copy-button/copy-button';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, Trash2 } from 'lucide-react';
-import { deleteWallet } from '../actions/delete-wallet';
-import { toast } from 'sonner';
 import { ConfirmDeleteWallet } from './confirm-delete-dialog';
 
 export default function WalletCard({ wallet }: { wallet: WalletDetail }) {

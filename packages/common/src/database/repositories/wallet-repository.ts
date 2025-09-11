@@ -8,15 +8,19 @@ export type WalletDTO = Selectable<Database['wallet']>;
 export class WalletRepository {
   constructor(private readonly db: Kysely<Database>) {}
   async get(id: string): Promise<WalletDTO | undefined> {
-    return getRow(this.db, 'wallet', { id });
+    return getRow(this.db, 'wallet', { id }).executeTakeFirst();
   }
 
   async delete(id: string): Promise<void> {
-    await deleteRow(this.db, 'wallet', { id });
+    deleteRow(this.db, 'wallet', { id }).execute();
   }
 
-  async getByUserId(userId: string): Promise<WalletDTO[]> {
-    return getRows(this.db, 'wallet', { userId });
+  async listByUserId(
+    userId: string,
+    orderBy: 'name' | 'createdAt' = 'name',
+    orderDirection: 'asc' | 'desc' = 'asc',
+  ): Promise<WalletDTO[]> {
+    return getRows(this.db, 'wallet', { userId }).orderBy(orderBy, orderDirection).execute();
   }
 
   async createWallet(userId: string, name: string, address: string): Promise<WalletDTO> {

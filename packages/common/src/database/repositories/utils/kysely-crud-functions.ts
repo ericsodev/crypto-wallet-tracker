@@ -18,7 +18,7 @@ export const createManyRows = async <T extends keyof Database>(
   return db.insertInto(tableName).values(data).returningAll().execute();
 };
 
-export const getRow = async <T extends keyof Database>(
+export const getRow = <T extends keyof Database>(
   db: Kysely<Database>,
   tableName: T,
   filters: FilterObject<Database, T>,
@@ -28,11 +28,10 @@ export const getRow = async <T extends keyof Database>(
     .selectFrom(db.dynamic.table(tableName).as('t'))
     .selectAll()
     .where(eb => eb.and(filters as any))
-    .$if(!includeDeleted, qb => qb.where('deletedAt', 'is', null))
-    .executeTakeFirst();
+    .$if(!includeDeleted, qb => qb.where('deletedAt', 'is', null));
 };
 
-export const getRows = async <T extends keyof Database>(
+export const getRows = <T extends keyof Database>(
   db: Kysely<Database>,
   tableName: T,
   filters: FilterObject<Database, T>,
@@ -42,11 +41,10 @@ export const getRows = async <T extends keyof Database>(
     .selectFrom(db.dynamic.table(tableName).as('t'))
     .selectAll()
     .where(eb => eb.and(filters as any))
-    .$if(!includeDeleted, qb => qb.where('deletedAt', 'is', null))
-    .execute();
+    .$if(!includeDeleted, qb => qb.where('deletedAt', 'is', null));
 };
 
-export const updateRow = async <T extends keyof Database>(
+export const updateRow = <T extends keyof Database>(
   db: Kysely<Database>,
   tableName: T,
   filters: FilterObject<Database, T>,
@@ -58,11 +56,10 @@ export const updateRow = async <T extends keyof Database>(
     .set(data as any)
     .where(eb => eb.and(filters as any))
     .$if(!includeDeleted, qb => qb.where('deletedAt', 'is', null))
-    .returningAll()
-    .executeTakeFirst();
+    .returningAll();
 };
 
-export const deleteRow = async <T extends keyof Database>(
+export const deleteRow = <T extends keyof Database>(
   db: Kysely<Database>,
   tableName: T,
   filters: FilterObject<Database, T>,
@@ -73,6 +70,5 @@ export const deleteRow = async <T extends keyof Database>(
     .returningAll()
     .set({ deletedAt: new Date() } as any)
     .where(eb => eb.and(filters as any))
-    .$if(!includeDeleted, qb => qb.where('deletedAt', 'is', null))
-    .executeTakeFirst();
+    .$if(!includeDeleted, qb => qb.where('deletedAt', 'is', null));
 };

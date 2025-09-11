@@ -25,7 +25,7 @@ export default async function Wallets() {
   }
 
   const walletRepo = new WalletRepository(db);
-  const wallets: WalletDetail[] = (await walletRepo.getByUserId(session.user.id)).map(wallet => ({
+  const wallets: WalletDetail[] = (await walletRepo.listByUserId(session.user.id)).map(wallet => ({
     ...wallet,
     balance: '0',
     lastActivity: 'No activity',
