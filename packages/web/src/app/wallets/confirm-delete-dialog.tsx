@@ -21,24 +21,18 @@ export function ConfirmDeleteWallet({ wallet, trigger }: { wallet: WalletDetail;
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        {trigger
-          ? (
-              trigger
-            )
-          : (
-              <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10">
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            )}
+        {trigger ? (
+          trigger
+        ) : (
+          <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10">
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Delete Wallet</DialogTitle>
-          <DialogDescription>
-            Confirm you want to delete '
-            {wallet.name}
-            ' permanently.
-          </DialogDescription>
+          <DialogDescription>Confirm you want to delete '{wallet.name}' permanently.</DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
@@ -50,7 +44,7 @@ export function ConfirmDeleteWallet({ wallet, trigger }: { wallet: WalletDetail;
             className="text-destructive hover:bg-destructive/10"
             onClick={async () => {
               await deleteWallet(wallet.id);
-              toast(`The wallet '${wallet.name}' has been deleted`, { description: 'foobar' });
+              toast(`The wallet '${wallet.name}' has been deleted`);
               setIsOpen(false);
             }}
           >
