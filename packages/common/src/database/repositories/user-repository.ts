@@ -21,15 +21,15 @@ export class UserRepository {
   }
 
   async update(id: string, data: Updateable<UserTable>): Promise<UserDTO | undefined> {
-    return updateRow(this.db, 'user', { id }, data);
+    return updateRow(this.db, 'user', { id }, data).executeTakeFirst();
   }
 
   async get(id: string): Promise<UserDTO | undefined> {
-    return getRow(this.db, 'user', { id });
+    return getRow(this.db, 'user', { id }).executeTakeFirst();
   }
 
   async getByEmail(email: string): Promise<UserDTO | undefined> {
-    return getRow(this.db, 'user', { email });
+    return getRow(this.db, 'user', { email }).executeTakeFirst();
   }
 
   async getByProvider(provider: string, providerId: string): Promise<UserDTO | undefined> {
@@ -42,7 +42,7 @@ export class UserRepository {
           providerId,
         }),
       )
-      .selectAll()
+      .selectAll('user')
       .executeTakeFirst();
   }
 }

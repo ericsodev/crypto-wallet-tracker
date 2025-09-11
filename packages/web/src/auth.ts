@@ -17,7 +17,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return user;
     },
     async linkAccount(account) {
-      console.log('account', account);
       await userRepository.linkAccount({
         provider: account.provider,
         providerId: account.providerAccountId,
@@ -52,6 +51,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const updatedUser = await userRepository.update(user.id, { email: user.email, name: user.name ?? undefined });
       if (!updatedUser) throw new Error('User not found');
       return { ...updatedUser, emailVerified: null };
+    },
+  },
+  callbacks: {
+    async session({ session, token }) {
+      if (token.sub) {
+        session.user.id = token.sub;
+      }
+      // Send properties to the client
+      return session;
     },
   },
 });
