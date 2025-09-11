@@ -13,7 +13,7 @@ export default function WalletCard({ wallet }: { wallet: WalletDetail }) {
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg text-foreground">{wallet.name}</CardTitle>
           <div className="flex items-center gap-2">
-            <CopyButton value={wallet.address} />
+            <CopyButton value={wallet.address} tooltip="Copy address" />
             <a href={`https://etherscan.io/address/${wallet.address}`} target="_blank">
               <Button variant="outline" size="sm">
                 <ExternalLink className="h-4 w-4" />
