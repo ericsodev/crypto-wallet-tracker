@@ -10,6 +10,7 @@
   "dependencies": {
     "bullmq": "^5.58.5",
     "common": "workspace:*",
+    "js-big-decimal": "^2.2.0",
     "zod": "^4.1.7"
   },
   "devDependencies": {
