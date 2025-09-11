@@ -7,6 +7,7 @@ import { WalletRepository } from '@common/database/repositories/wallet-repositor
 import { unauthorized } from 'next/navigation';
 import { connectWalletFormSchema } from '../schemas/connect-wallet';
 import { revalidatePath } from 'next/cache';
+import { syncNewWallet } from '@common/services/wallet-sync-service';
 
 export const createWallet = async (_initialState: any, formData: FormData) => {
   const session = await auth();
@@ -27,6 +28,8 @@ export const createWallet = async (_initialState: any, formData: FormData) => {
     validatedData.data.walletName,
     validatedData.data.walletAddress,
   );
+
+  await syncNewWallet(wallet.id);
 
   revalidatePath('/wallets');
   return { success: true, walletId: wallet.id };

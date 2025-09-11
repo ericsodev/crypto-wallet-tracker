@@ -8,9 +8,13 @@ const syncWalletJobSchema = z.discriminatedUnion('type', [
 
 type SyncWalletJobRequest = z.infer<typeof syncWalletJobSchema>;
 
-export function syncNewWallet(walletId: string) {
-  syncWalletQueue.add(walletId, { type: 'full', walletId } satisfies SyncWalletJobRequest, {
+export async function syncNewWallet(walletId: string) {
+  await syncWalletQueue.add(walletId, { type: 'full', walletId } satisfies SyncWalletJobRequest, {
     attempts: 4,
     backoff: { jitter: 0.7, type: 'exponential', delay: 5000 },
   });
+}
+
+export async function getWalletSyncJob(walletId: string) {
+  return await syncWalletQueue.getJob(walletId);
 }
