@@ -11,7 +11,7 @@ interface CopyButtonProps extends React.ComponentProps<typeof Button> {
 export default function CopyButton({ value, tooltip: toolTip, ...props }: CopyButtonProps): React.JSX.Element {
   return (
     <Tooltip>
-      <TooltipTrigger>
+      <TooltipTrigger asChild>
         <Button
           variant="outline"
           size="sm"
