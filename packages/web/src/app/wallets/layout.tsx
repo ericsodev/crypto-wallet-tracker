@@ -3,9 +3,5 @@ import { PropsWithChildren } from 'react';
 import WagmiContextProvider from '../context/wagmi';
 
 export default function Layout({ children }: PropsWithChildren) {
-  return (
-    <SidebarLayout>
-      <WagmiContextProvider cookies={null}>{children}</WagmiContextProvider>;
-    </SidebarLayout>
-  );
+  return <SidebarLayout>{children}</SidebarLayout>;
 }

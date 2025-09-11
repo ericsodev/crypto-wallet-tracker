@@ -26,6 +26,12 @@
       "@/*": [
         "./src/*"
       ],
+      "@actions/*": [
+        "./src/app/actions/*"
+      ],
+      "@schemas/*": [
+        "./src/app/schemas/*"
+      ],
       "@common/*": [
         "../common/src/*"
       ]

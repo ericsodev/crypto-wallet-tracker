@@ -6,7 +6,7 @@ import { ExternalLink, Trash2 } from 'lucide-react';
 
 export default function WalletCard({ wallet }: { wallet: WalletDetail }) {
   return (
-    <Card key={wallet.id} className="shadow-card border-border bg-card">
+    <Card key={wallet.id} id={wallet.id} className="shadow-card border-border bg-card">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg text-foreground">{wallet.name}</CardTitle>
