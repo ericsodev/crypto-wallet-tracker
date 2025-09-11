@@ -21,11 +21,11 @@ export default function WalletCard({ wallet }: { wallet: WalletDetail }) {
             </a>
             <ConfirmDeleteWallet
               wallet={wallet}
-              trigger={
+              trigger={(
                 <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10">
                   <Trash2 className="h-4 w-4" />
                 </Button>
-              }
+              )}
             />
           </div>
         </div>
@@ -34,26 +34,45 @@ export default function WalletCard({ wallet }: { wallet: WalletDetail }) {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <p className="text-sm text-muted-foreground">Address</p>
-            <p className="font-mono text-sm text-foreground">{wallet.address.slice(0, 20)}...</p>
+            <p className="font-mono text-sm text-foreground">
+              {wallet.address.slice(0, 20)}
+              ...
+            </p>
           </div>
           <div>
             <p className="text-sm text-muted-foreground">Balance</p>
-            <p className="font-bold text-lg text-foreground">{wallet.balance} ETH</p>
+            <p className="font-bold text-lg text-foreground">
+              {wallet.balance}
+              {' '}
+              ETH
+            </p>
           </div>
           <div>
-            {wallet.fiatValue ? (
-              <>
-                <p className="text-sm text-muted-foreground">{wallet.fiatValue.currency} Value</p>
-                <p className="font-bold text-lg text-foreground">${wallet.fiatValue.value.toLocaleString()}</p>
-              </>
-            ) : (
-              <p className="text-sm text-muted-foreground">No Exchange Rate</p>
-            )}
+            {wallet.fiatValue
+              ? (
+                  <>
+                    <p className="text-sm text-muted-foreground">
+                      {wallet.fiatValue.currency}
+                      {' '}
+                      Value
+                    </p>
+                    <p className="font-bold text-lg text-foreground">
+                      $
+                      {wallet.fiatValue.value.toLocaleString()}
+                    </p>
+                  </>
+                )
+              : (
+                  <p className="text-sm text-muted-foreground">No Exchange Rate</p>
+                )}
           </div>
           <div>
             <p className="text-sm text-muted-foreground">Transactions</p>
             <p className="font-medium text-foreground">{wallet.transactions}</p>
-            <p className="text-xs text-muted-foreground">Last: {wallet.lastActivity}</p>
+            <p className="text-xs text-muted-foreground">
+              Last:
+              {wallet.lastActivity}
+            </p>
           </div>
         </div>
 

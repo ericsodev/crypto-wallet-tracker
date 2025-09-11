@@ -70,7 +70,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href={'/settings'}>
+              <a href="/settings">
                 <Settings />
                 <span>Settings</span>
               </a>
@@ -80,7 +80,9 @@ export function AppSidebar() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  <User2 /> {data?.user?.name ?? ''}
+                  <User2 />
+                  {' '}
+                  {data?.user?.name ?? ''}
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>

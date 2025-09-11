@@ -13,19 +13,21 @@ export default function Home() {
       <p className="text-muted-foreground font-normal text-xl max-w-[40ch] text-center">
         Track wallet activity, aggregate portfolio balances, and export financial data.
       </p>
-      {data?.user ? (
-        <Link href={'/dashboard'}>
-          <Button>Go to Dashboard</Button>
-        </Link>
-      ) : (
-        <Button
-          onClick={() => {
-            signIn('google', { redirectTo: '/dashboard' });
-          }}
-        >
-          Sign in with Google
-        </Button>
-      )}
+      {data?.user
+        ? (
+            <Link href="/dashboard">
+              <Button>Go to Dashboard</Button>
+            </Link>
+          )
+        : (
+            <Button
+              onClick={() => {
+                signIn('google', { redirectTo: '/dashboard' });
+              }}
+            >
+              Sign in with Google
+            </Button>
+          )}
     </main>
   );
 }
