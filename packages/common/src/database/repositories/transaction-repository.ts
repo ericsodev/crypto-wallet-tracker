@@ -2,6 +2,7 @@ import type { Insertable, Kysely } from 'kysely';
 import { createManyRows, createRow, getRow, getRows } from './utils/kysely-crud-functions';
 import type { Database } from '../database';
 import type { Selectable } from 'kysely';
+import { addPaginationFilter, getPaginationParameters, PaginationParameters } from './utils/pagination';
 
 export type TransactionDTO = Selectable<Database['transaction']>;
 
@@ -13,6 +14,13 @@ export class TransactionRepository {
 
   async getByFilter(filters: Partial<TransactionDTO>): Promise<TransactionDTO[]> {
     return getRows(this.db, 'transaction', filters).execute();
+  }
+
+  async listTransactions(userId: string, pagination: PaginationParameters): Promise<TransactionDTO[]> {
+    return getRows(this.db, 'transaction', { userId })
+      .selectAll('t')
+      .$call(qb => addPaginationFilter(qb, pagination, 't.timestamp'))
+      .execute();
   }
 
   async createTransaction(transaction: Insertable<Database['transaction']>): Promise<TransactionDTO> {
