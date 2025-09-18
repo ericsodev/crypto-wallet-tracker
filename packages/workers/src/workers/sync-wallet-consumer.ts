@@ -97,7 +97,7 @@ async function getAllTransactions(sdk: EtherscanAccountsAPI, wallet: WalletDTO) 
     });
     allTransactions.push(...transactions.result);
 
-    hasNextBlock = transactions.result.length < 1000;
+    hasNextBlock = transactions.result.length >= 1000;
     const currentBlock = Number(transactions.result.at(transactions.result.length - 1)?.blockNumber);
     if (Number.isNaN(currentBlock)) {
       break;

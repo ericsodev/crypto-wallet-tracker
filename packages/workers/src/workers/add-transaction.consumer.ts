@@ -17,15 +17,20 @@ export const addTransactionConsumerFactory = (db: Kysely<Database>, env: WorkerE
     async (job: Job) => {
       const request = addTransactionJobSchema.safeParse(job.data);
 
+      if (!job.token) {
+        await job.moveToFailed(new Error('No token'), job.token ?? '');
+        return;
+      }
+
       if (!request.success) {
         // Immediately fail without retry
-        await job.moveToFailed(request.error, job.token ?? '');
+        await job.moveToFailed(request.error, job.token);
         return;
       }
       const wallet = await walletRepo.get(request.data.walletId);
       if (!wallet) {
         // Immediately fail without retry
-        await job.moveToFailed(new Error('Wallet does not exist'), job.token ?? '');
+        await job.moveToFailed(new Error('Wallet does not exist'), job.token);
         return;
       }
 
