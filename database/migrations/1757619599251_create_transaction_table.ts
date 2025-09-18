@@ -3,6 +3,7 @@ import { sql, type Kysely } from 'kysely';
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable('transaction')
+    .addColumn('id', 'uuid', col => col.defaultTo(sql`gen_random_uuid()`).primaryKey())
     .addColumn('createdAt', 'timestamptz', col => col.notNull().defaultTo(sql`current_timestamp`))
     .addColumn('updatedAt', 'timestamptz', col => col.notNull().defaultTo(sql`current_timestamp`))
     .addColumn('deletedAt', 'timestamptz')
