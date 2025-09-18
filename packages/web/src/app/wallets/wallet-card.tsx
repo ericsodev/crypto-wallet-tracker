@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { WalletDetail } from './page';
 import CopyButton from '@/components/copy-button/copy-button';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Trash2 } from 'lucide-react';
+import { ExternalLink, Loader2Icon, Trash2 } from 'lucide-react';
 import { ConfirmDeleteWallet } from './confirm-delete-dialog';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 export default function WalletCard({ wallet }: { wallet: WalletDetail }) {
   return (
@@ -13,6 +14,14 @@ export default function WalletCard({ wallet }: { wallet: WalletDetail }) {
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg text-foreground">{wallet.name}</CardTitle>
           <div className="flex items-center gap-2">
+            {wallet.syncJob && wallet.syncJob !== 'unknown' && (
+              <Tooltip>
+                <TooltipTrigger>
+                  <Loader2Icon className="animate-spin" />
+                </TooltipTrigger>
+                <TooltipContent>{wallet.syncJob}</TooltipContent>
+              </Tooltip>
+            )}
             <CopyButton value={wallet.address} tooltip="Copy address" />
             <a href={`https://etherscan.io/address/${wallet.address}`} target="_blank">
               <Button variant="outline" size="sm">
@@ -21,11 +30,11 @@ export default function WalletCard({ wallet }: { wallet: WalletDetail }) {
             </a>
             <ConfirmDeleteWallet
               wallet={wallet}
-              trigger={(
+              trigger={
                 <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10">
                   <Trash2 className="h-4 w-4" />
                 </Button>
-              )}
+              }
             />
           </div>
         </div>
@@ -41,30 +50,17 @@ export default function WalletCard({ wallet }: { wallet: WalletDetail }) {
           </div>
           <div>
             <p className="text-sm text-muted-foreground">Balance</p>
-            <p className="font-bold text-lg text-foreground">
-              {wallet.balance}
-              {' '}
-              ETH
-            </p>
+            <p className="font-bold text-lg text-foreground">{wallet.balance} ETH</p>
           </div>
           <div>
-            {wallet.fiatValue
-              ? (
-                  <>
-                    <p className="text-sm text-muted-foreground">
-                      {wallet.fiatValue.currency}
-                      {' '}
-                      Value
-                    </p>
-                    <p className="font-bold text-lg text-foreground">
-                      $
-                      {wallet.fiatValue.value.toLocaleString()}
-                    </p>
-                  </>
-                )
-              : (
-                  <p className="text-sm text-muted-foreground">No Exchange Rate</p>
-                )}
+            {wallet.fiatValue ? (
+              <>
+                <p className="text-sm text-muted-foreground">{wallet.fiatValue.currency} Value</p>
+                <p className="font-bold text-lg text-foreground">${wallet.fiatValue.value.toLocaleString()}</p>
+              </>
+            ) : (
+              <p className="text-sm text-muted-foreground">No Exchange Rate</p>
+            )}
           </div>
           <div>
             <p className="text-sm text-muted-foreground">Transactions</p>

@@ -7,10 +7,12 @@ import { Plus } from 'lucide-react';
 import { unauthorized } from 'next/navigation';
 import WalletCard from './wallet-card';
 import { ConnectWallet } from './connect-wallet';
+import { getWalletSyncJob, getWalletSyncJobState } from '@common/services/wallet-sync-service';
 
 export interface WalletDetail extends WalletDTO {
   balance: string;
   lastActivity: string;
+  syncJob?: string | undefined;
   fiatValue?: {
     currency: string;
     value: string;
@@ -25,13 +27,18 @@ export default async function Wallets() {
   }
 
   const walletRepo = new WalletRepository(db);
-  const wallets: WalletDetail[] = (await walletRepo.listByUserId(session.user.id)).map(wallet => ({
-    ...wallet,
-    balance: wallet.balance ?? '0',
-    lastActivity: 'No activity',
-    transactions: 0,
-  }));
-
+  const wallets: WalletDetail[] = await (async (userId: string) => {
+    const wallets: WalletDetail[] = (await walletRepo.listByUserId(userId)).map(wallet => ({
+      ...wallet,
+      balance: wallet.balance ?? '0',
+      lastActivity: 'No activity',
+      transactions: Number(wallet.numTransactions),
+    }));
+    for (const wallet of wallets) {
+      wallet.syncJob = await getWalletSyncJobState(wallet.id);
+    }
+    return wallets;
+  })(session.user.id);
   return (
     <div className="flex-1 space-y-6 p-6">
       {/* Header */}
