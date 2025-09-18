@@ -13,7 +13,7 @@ export const mapEtherscanInternalTransaction = (transaction: EtherscanInternalTr
     hash: transaction.hash,
     senderAddress: transaction.from,
     recipientAddress: transaction.to,
-    timestamp: new Date(transaction.timeStamp), // from unix epoch,
+    timestamp: new Date(Number(transaction.timeStamp) * 1000), // from unix epoch in milliseconds,
     type: 'WITHDRAWAL',
   };
 };

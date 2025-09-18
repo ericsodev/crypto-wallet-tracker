@@ -12,11 +12,13 @@ const addTransactionConsumer = addTransactionConsumerFactory(db, environment);
 
 syncWalletConsumer.run();
 addTransactionConsumer.run();
-process.on('SIGTERM', () => {
-  syncWalletConsumer.close();
-  addTransactionConsumer.close();
+process.on('SIGTERM', async () => {
+  await syncWalletConsumer.close();
+  await addTransactionConsumer.close();
+  process.exit(0);
 });
-process.on('SIGINT', () => {
-  syncWalletConsumer.close();
-  addTransactionConsumer.close();
+process.on('SIGINT', async () => {
+  await syncWalletConsumer.close();
+  await addTransactionConsumer.close();
+  process.exit(0);
 });

@@ -4,7 +4,7 @@ import { WalletRepository, type WalletDTO } from '@common/database/repositories/
 import { addTransactionQueue } from '@common/services/queues';
 import { enqueueManyTransactionEvents } from '@common/services/transaction-services/add-transaction-service';
 import { syncWalletJobSchema } from '@common/services/wallet-sync-service';
-import { Worker, Job } from 'bullmq';
+import { Worker, Job, type ParentOptions } from 'bullmq';
 import { sleep } from 'bun';
 import bigDecimal from 'js-big-decimal';
 import type { Kysely } from 'kysely';
@@ -38,21 +38,13 @@ export const syncWalletConsumerFactory = (db: Kysely<Database>, env: WorkerEnvir
         return;
       }
 
-      await sleep(10);
-
       const balance = await sdk.getBalance({ address: wallet.address, tag: 'latest', chainid: 1 });
       const weiBalance = balance.result; // TODO: result in wei
       const ethBalance = new bigDecimal(weiBalance).divide(new bigDecimal('1e18')).getValue();
       await walletBalanceRepo.storeWalletBalance(wallet.id, ethBalance, new Date());
 
       // TODO: range filters
-      const transactions = await getAllTransactions(sdk, wallet);
-      await enqueueManyTransactionEvents(
-        transactions.map(transaction => ({
-          walletId: wallet.id,
-          transaction: mapEtherscanInternalTransaction(transaction),
-        })),
-      );
+      const transactions = await getAllTransactions(sdk, wallet, { id: job.id ?? '', queue: job.queueQualifiedName });
       await addTransactionQueue.addBulk(
         transactions.map(transaction => ({
           data: { walletId: wallet.id, transaction },
@@ -81,7 +73,7 @@ export const syncWalletConsumerFactory = (db: Kysely<Database>, env: WorkerEnvir
   return syncWalletConsumer;
 };
 
-async function getAllTransactions(sdk: EtherscanAccountsAPI, wallet: WalletDTO) {
+async function getAllTransactions(sdk: EtherscanAccountsAPI, wallet: WalletDTO, parent: ParentOptions) {
   let hasNextBlock = true;
   let nextBlock: number = 0;
   const allTransactions: Transaction[] = [];
@@ -97,6 +89,14 @@ async function getAllTransactions(sdk: EtherscanAccountsAPI, wallet: WalletDTO) 
     });
     allTransactions.push(...transactions.result);
 
+    await enqueueManyTransactionEvents(
+      transactions.result.map(transaction => ({
+        walletId: wallet.id,
+        transaction: mapEtherscanInternalTransaction(transaction),
+      })),
+      { parent },
+    );
+
     hasNextBlock = transactions.result.length >= 1000;
     const currentBlock = Number(transactions.result.at(transactions.result.length - 1)?.blockNumber);
     if (Number.isNaN(currentBlock)) {
@@ -104,7 +104,7 @@ async function getAllTransactions(sdk: EtherscanAccountsAPI, wallet: WalletDTO) 
     }
     nextBlock = currentBlock + 1;
 
-    await sleep(1000);
+    await sleep(350);
   }
   return allTransactions;
 }
