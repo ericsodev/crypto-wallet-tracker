@@ -3,9 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { WalletDetail } from './page';
 import CopyButton from '@/components/copy-button/copy-button';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Loader2Icon, Trash2 } from 'lucide-react';
+import { ExternalLink, Loader2Icon, RefreshCwIcon, Trash2 } from 'lucide-react';
 import { ConfirmDeleteWallet } from './confirm-delete-dialog';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { syncWallet } from '../actions/sync-wallet';
 
 export default function WalletCard({ wallet }: { wallet: WalletDetail }) {
   return (
@@ -14,13 +15,22 @@ export default function WalletCard({ wallet }: { wallet: WalletDetail }) {
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg text-foreground">{wallet.name}</CardTitle>
           <div className="flex items-center gap-2">
-            {wallet.syncJob && wallet.syncJob !== 'unknown' && (
+            {wallet.syncJob && wallet.syncJob !== 'unknown' ? (
               <Tooltip>
                 <TooltipTrigger>
-                  <Loader2Icon className="animate-spin" />
+                  <Loader2Icon className="animate-spin w-4 h-4" />
                 </TooltipTrigger>
                 <TooltipContent>{wallet.syncJob}</TooltipContent>
               </Tooltip>
+            ) : (
+              <Button
+                variant="outline"
+                onClick={async () => {
+                  await syncWallet(wallet.id);
+                }}
+              >
+                <RefreshCwIcon className="w-4 h-4" />
+              </Button>
             )}
             <CopyButton value={wallet.address} tooltip="Copy address" />
             <a href={`https://etherscan.io/address/${wallet.address}`} target="_blank">
