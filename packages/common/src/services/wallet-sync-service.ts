@@ -18,3 +18,6 @@ export async function syncNewWallet(walletId: string) {
 export async function getWalletSyncJob(walletId: string) {
   return await syncWalletQueue.getJob(walletId);
 }
+export async function getWalletSyncJobState(walletId: string) {
+  return await syncWalletQueue.getJobState(walletId);
+}

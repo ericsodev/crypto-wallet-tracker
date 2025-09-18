@@ -5,7 +5,7 @@ import type { Selectable } from 'kysely';
 import type { Merge } from 'type-fest';
 
 export type WalletDTO = Selectable<Database['wallet']>;
-export type WalletWithRecentBalanceDTO = Merge<Selectable<Database['wallet']>, { balance?: string | null }>;
+export type WalletDetail = Merge<Selectable<Database['wallet']>, { balance?: string | null; numTransactions: string }>;
 
 export class WalletRepository {
   constructor(private readonly db: Kysely<Database>) {}
@@ -21,7 +21,7 @@ export class WalletRepository {
     userId: string,
     orderBy: 'name' | 'createdAt' = 'name',
     orderDirection: 'asc' | 'desc' = 'asc',
-  ): Promise<WalletWithRecentBalanceDTO[]> {
+  ): Promise<WalletDetail[]> {
     return getRows(this.db, 'wallet', { userId })
       .orderBy(orderBy, orderDirection)
       .select(qb =>
@@ -32,6 +32,15 @@ export class WalletRepository {
           .orderBy('timestamp', 'desc')
           .limit(1)
           .as('balance'),
+      )
+      .select(qb =>
+        qb
+          .selectFrom('transaction')
+          .where('deletedAt', 'is', null)
+          .where('walletId', '=', eb => eb.ref('t.id'))
+          .select(eb => eb.fn.countAll('transaction').$castTo<string>().as('count'))
+          .$asScalar()
+          .as('numTransactions'),
       )
       .execute();
   }
