@@ -16,7 +16,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn('amount', 'varchar', col => col.notNull())
     .addColumn('fee', 'varchar', col => col.notNull())
     .addColumn('senderAddress', 'varchar', col => col.notNull())
-    .addColumn('recepientAddress', 'varchar', col => col.notNull())
+    .addColumn('recipientAddress', 'varchar', col => col.notNull())
     .execute();
 }
 

@@ -9,12 +9,12 @@ export enum TransactionType {
 export interface TransactionTable extends BaseTable {
   userId: string;
   walletId: string;
-  type: string;
+  type: TransactionType;
   timestamp: Date;
   blockNumber: number;
   amount: string;
   fee: string;
   senderAddress: string;
-  recepientAddress: string;
+  recipientAddress: string;
   hash: string;
 }

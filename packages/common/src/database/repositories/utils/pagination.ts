@@ -8,14 +8,19 @@ export interface PaginationParameters {
   sortDirection: 'asc' | 'desc';
 }
 
+export interface PaginationMetadataResponse<T> {
+  data: T;
+  pagination: PaginationMetadata;
+}
+
 export interface PaginationMetadata {
   totalCount: number;
   totalPages: number;
   currentPage: number;
 }
 
-export const getPaginationParameters = async (
-  qb: SelectQueryBuilder<Database, keyof Database, unknown>,
+export const getPaginationMetadata = async <DB, TB extends keyof DB, O>(
+  qb: SelectQueryBuilder<DB, TB, O>,
   params: PaginationParameters,
 ): Promise<PaginationMetadata> => {
   const { totalCount: totalCountString } = await qb
@@ -25,6 +30,7 @@ export const getPaginationParameters = async (
     .clearLimit()
     .clearGroupBy()
     .select(eb => eb.fn.countAll().$castTo<string>().as('totalCount'))
+    .$castTo<{ totalCount: string }>()
     .executeTakeFirstOrThrow();
 
   const totalCount = Number(totalCountString);
