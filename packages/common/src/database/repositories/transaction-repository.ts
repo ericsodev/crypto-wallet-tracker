@@ -24,13 +24,19 @@ export class TransactionRepository {
   async listTransactions(
     userId: string,
     pagination: PaginationParameters,
+    filters: Partial<TransactionDTO>,
   ): Promise<PaginationMetadataResponse<TransactionDTO[]>> {
+    console.log('filters', filters);
     const query = getRows(this.db, 'transaction', { userId })
       .selectAll('t')
+      .where(eb => eb.and(filters))
       .$call(qb => addPaginationFilter(qb, pagination, 't.timestamp'));
     const metadata = await getPaginationMetadata(query, pagination);
 
-    return { data: await query.execute(), pagination: metadata };
+    const data = await query.execute();
+    console.log(data, metadata);
+
+    return { data, pagination: metadata };
   }
 
   async createTransaction(transaction: Insertable<Database['transaction']>): Promise<TransactionDTO> {

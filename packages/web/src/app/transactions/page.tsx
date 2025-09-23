@@ -6,6 +6,7 @@ import { Download, ArrowLeftRight, ArrowUpRight, ArrowDownLeft } from 'lucide-re
 import { unauthorized, useSearchParams } from 'next/navigation';
 import { TransactionTable } from './transaction-table';
 import { PaginationControls } from './pagination-controls';
+import { flattenSearchParam } from '@/lib/flatten-search-param';
 
 export interface TransactionDetail {
   id: string;
@@ -96,7 +97,7 @@ const Transactions = async (props: PageProps<'/transactions'>) => {
           <CardTitle className="text-foreground">All Transactions</CardTitle>
         </CardHeader>
         <CardContent>
-          <TransactionTable page={page} />
+          <TransactionTable page={page} hash={flattenSearchParam(searchParams['hash'])} />
         </CardContent>
       </Card>
     </div>
