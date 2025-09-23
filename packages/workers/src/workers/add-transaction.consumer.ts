@@ -1,6 +1,7 @@
 import type { Database } from '@common/database/database';
 import { TransactionRepository } from '@common/database/repositories/transaction-repository';
 import { WalletRepository, type WalletDTO } from '@common/database/repositories/wallet-repository';
+import { TransactionType } from '@common/database/tables/transaction-table';
 import {
   addTransactionJobSchema,
   type TransactionPayload,
@@ -67,11 +68,11 @@ async function processTransaction(
     walletId: wallet.id,
     userId: wallet.userId,
     hash: transaction.hash,
-    type: 'WITHDRAWAL',
+    type: TransactionType.WITHDRAWAL,
     amount: transaction.amount,
     fee: transaction.fee,
     blockNumber: transaction.blockNumber,
-    recepientAddress: transaction.recipientAddress,
+    recipientAddress: transaction.recipientAddress,
     senderAddress: transaction.senderAddress,
     timestamp: transaction.timestamp,
   });
