@@ -8,6 +8,7 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "db:init": "bun scripts/init-database.ts",
+    "db:rollback": "NODE_ENV=development bun kysely migrate down -e development",
     "db:migrate": "NODE_ENV=development bun kysely migrate up -e development",
     "db:migrate:production": "bun kysely migrate up",
     "db:migrate:new": "NODE_ENV=development bun kysely migrate:make",

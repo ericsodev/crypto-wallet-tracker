@@ -1,4 +1,5 @@
 import type { AuthProviderTable } from './tables/auth-provider-table';
+import { TransactionTable } from './tables/transaction-table';
 import type { UserTable } from './tables/user-table';
 import type { WalletBalanceTable } from './tables/wallet-balance-table';
 import type { WalletTable } from './tables/wallet-table';
@@ -8,4 +9,5 @@ export interface Database {
   user: UserTable;
   wallet: WalletTable;
   walletBalance: WalletBalanceTable;
+  transaction: TransactionTable;
 }

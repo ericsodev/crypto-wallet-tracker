@@ -1,0 +1,24 @@
+import z from 'zod';
+import { syncWalletQueue } from './queues';
+
+export const syncWalletJobSchema = z.discriminatedUnion('type', [
+  z.object({ type: z.literal('full'), walletId: z.uuid() }),
+  z.object({ type: z.literal('range'), walletId: z.uuid(), startDate: z.coerce.date(), endDate: z.coerce.date() }),
+]);
+
+type SyncWalletJobRequest = z.infer<typeof syncWalletJobSchema>;
+
+export async function syncNewWallet(walletId: string) {
+  await syncWalletQueue.add(walletId, { type: 'full', walletId } satisfies SyncWalletJobRequest, {
+    attempts: 4,
+    backoff: { jitter: 0.7, type: 'exponential', delay: 5000 },
+    jobId: walletId,
+  });
+}
+
+export async function getWalletSyncJob(walletId: string) {
+  return await syncWalletQueue.getJob(walletId);
+}
+export async function getWalletSyncJobState(walletId: string) {
+  return await syncWalletQueue.getJobState(walletId);
+}
