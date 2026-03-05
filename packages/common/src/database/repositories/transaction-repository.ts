@@ -49,6 +49,23 @@ export class TransactionRepository {
     return { data, pagination: metadata };
   }
 
+  async getAllTransactions(
+    userId: string,
+    filters: Partial<TransactionDTO>,
+    rangeFilters?: TransactionRangeFilters,
+  ): Promise<TransactionDTO[]> {
+    return getRows(this.db, 'transaction', { userId })
+      .selectAll('t')
+      .where(eb => eb.and(filters))
+      .$if(!!rangeFilters?.startDate || !!rangeFilters?.endDate, qb =>
+        qb.where('t.timestamp', '<@', eb =>
+          postgresTsRange(eb.val(rangeFilters?.startDate ?? null), eb.val(rangeFilters?.endDate ?? null)),
+        ),
+      )
+      .orderBy('t.timestamp', 'desc')
+      .execute();
+  }
+
   async createTransaction(transaction: Insertable<Database['transaction']>): Promise<TransactionDTO> {
     return createRow(this.db, 'transaction', transaction);
   }

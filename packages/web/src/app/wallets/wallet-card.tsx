@@ -7,6 +7,7 @@ import { ExternalLink, Loader2Icon, RefreshCwIcon, Trash2 } from 'lucide-react';
 import { ConfirmDeleteWallet } from './confirm-delete-dialog';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { syncWallet } from '../actions/sync-wallet';
+import { ExportCsvDialog } from '../transactions/export-csv-dialog';
 
 export default function WalletCard({ wallet }: { wallet: WalletDetail }) {
   return (
@@ -86,9 +87,14 @@ export default function WalletCard({ wallet }: { wallet: WalletDetail }) {
           <Button variant="outline" size="sm">
             View Transactions
           </Button>
-          <Button variant="outline" size="sm">
-            Export Data
-          </Button>
+          <ExportCsvDialog
+            walletId={wallet.id}
+            trigger={
+              <Button variant="outline" size="sm">
+                Export Data
+              </Button>
+            }
+          />
         </div>
       </CardContent>
     </Card>

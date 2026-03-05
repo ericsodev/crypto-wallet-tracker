@@ -1,12 +1,11 @@
 import { auth } from '@/auth';
-import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { TransactionType } from '@common/database/tables/transaction-table';
-import { Download, ArrowLeftRight, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
-import { unauthorized, useSearchParams } from 'next/navigation';
+import { ArrowLeftRight, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
+import { unauthorized } from 'next/navigation';
 import { TransactionTable } from './transaction-table';
-import { PaginationControls } from './pagination-controls';
-import { flattenSearchParam, flattenSearchParamObject } from '@/lib/flatten-search-param';
+import { flattenSearchParamObject } from '@/lib/flatten-search-param';
+import { ExportCsvDialog } from './export-csv-dialog';
+import { TransactionType } from '@common/database/tables/transaction-table';
 
 export interface TransactionDetail {
   id: string;
@@ -37,10 +36,11 @@ const Transactions = async (props: PageProps<'/transactions'>) => {
           <p className="text-muted-foreground">View all your wallet transactions</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">
-            <Download className="mr-2 h-4 w-4" />
-            Export CSV
-          </Button>
+          <ExportCsvDialog
+            startDate={searchParams['startDate'] as string | undefined}
+            endDate={searchParams['endDate'] as string | undefined}
+            type={searchParams['type'] as TransactionType | undefined}
+          />
         </div>
       </div>
 
